@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
+<style>
+#map, html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+<script>
+
+const map = new mapboxgl.Map({
+    container: "map",
+    zoom: 13,
+    center: [3.227356, 51.210197]
+});
+
+map.addSource("osm_line", {
+    "type": "vector",
+    "tiles": [ "http://localhost:7800/osm.planet_osm_line/{z}/{x}/{y}.pbf" ]
+});
+
+map.addSource("osm_polygon", {
+    "type": "vector",
+    "tiles": [ "http://localhost:7800/osm.planet_osm_polygon/{z}/{x}/{y}.pbf" ]
+});
+
+map.addLayer({
+    "id": "background",
+    "type": "background",
+    "paint": {
+        "background-color": "#fafafa"
+    }
+});
+
+map.addLayer({
+    "id": "lines",
+    "type": "line",
+    "source": "osm_line",
+    "source-layer": "osm.planet_osm_line",
+    filter: [
+        "all",
+        [ "!=", "power", "cable" ],
+        [ "!=", "route", "ferry" ],
+        [ "!=", "route", "pipeline" ],
+        [ "!=", "man_made", "pipeline" ],
+        [ "!=", "operator", "Interoute" ],
+        [ "!=", "operator", "Elia" ],
+        [ "!=", "operator", "Level 3 Global Submarine" ],
+        [ "!=", "operator", "Global Telesystems" ],
+        [ "!=", "operator", "GLOBAL CROSSING" ],
+        [ "!=", "operator", "Seaborne Freight" ],
+        [ "!=", "operator", "BT" ],
+        [ "!=", "operator", "KPN TELECOM BV" ],
+        [ "!=", "boundary", "administrative" ],
+        [ "!=", "boundary", "protected_area" ],
+        [ "!=", "waterway", "fairway" ],
+        [ "!=", "name", "Sector Groot" ],
+        [ "!=", "name", "Sector Midden" ],
+        [ "!=", "name", "Sector Klein" ],
+        [ "!=", "name", "BRUGG-EEKLN" ]
+    ],
+    "paint": {
+        "line-color": "#777777",
+        "line-opacity": 0.4
+    }
+});
+
+map.on("click", "lines", function(e) {
+    console.log(JSON.stringify(e.features[0].properties));
+});
+
+map.addLayer({
+    "id": "railway",
+    "type": "line",
+    "source": "osm_line",
+    "source-layer": "osm.planet_osm_line",
+    filter: [ "all", [ "==", "railway", "rail" ]],
+    "paint": {
+        "line-color": "#d90368",
+        "line-opacity": 0.2
+    }
+});
+
+map.addLayer({
+    id: "residential",
+    type: "fill",
+    source: "osm_polygon",
+    "source-layer": "osm.planet_osm_polygon",
+    filter: [ "all", [ "==", "landuse", "residential" ]],
+    paint: {
+        "fill-color": "#7c90a0",
+        "fill-opacity": 0.2
+    }
+});
+
+map.addLayer({
+    id: "house",
+    type: "fill",
+    source: "osm_polygon",
+    "source-layer": "osm.planet_osm_polygon",
+    filter: [ "all", [ "==", "building", "house" ]],
+    paint: {
+        "fill-color": "#7c90a0",
+        "fill-opacity": 0.5
+    }
+});
+
+map.addControl(new mapboxgl.NavigationControl());
+
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+version: '3.1'
+services:
+  postgis:
+    build:
+      context: .
+      dockerfile: Dockerfile.postgis
+    environment:
+      POSTGRES_USER: osm
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+    - 5433:5432
+  osm2pgsql:
+    build:
+      context: .
+      dockerfile: Dockerfile.osm2pgsql
+    depends_on:
+    - postgis
+    volumes:
+    - ./data:/data
+    environment:
+      WAIT_HOSTS: postgis:5432
+  pgtileserv:
+    build:
+      context: .
+      dockerfile: Dockerfile.pgtileserv
+    depends_on:
+    - postgis
+    environment:
+      WAIT_HOSTS: postgis:5432
+      DATABASE_URL: postgresql://osm:@postgis/osm
+    ports:
+    - 7800:7800

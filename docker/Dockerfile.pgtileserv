@@ -1,0 +1,14 @@
+FROM debian
+
+RUN apt-get update
+RUN apt-get install -y wget unzip
+
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
+RUN chmod +x /wait
+
+RUN wget https://postgisftw.s3.amazonaws.com/pg_tileserv_latest_linux.zip
+RUN unzip pg_tileserv_latest_linux.zip
+
+ADD pg_tileserv.toml config/
+
+CMD /wait && ./pg_tileserv
