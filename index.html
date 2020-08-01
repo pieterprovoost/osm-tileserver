@@ -44,7 +44,7 @@ map.addLayer({
     "type": "line",
     "source": "osm_line",
     "source-layer": "osm.planet_osm_line",
-    filter: [
+    "filter": [
         "all",
         [ "!=", "power", "cable" ],
         [ "!=", "route", "ferry" ],
@@ -81,7 +81,7 @@ map.addLayer({
     "type": "line",
     "source": "osm_line",
     "source-layer": "osm.planet_osm_line",
-    filter: [ "all", [ "==", "railway", "rail" ]],
+    "filter": [ "all", [ "==", "railway", "rail" ]],
     "paint": {
         "line-color": "#d90368",
         "line-opacity": 0.2
@@ -89,24 +89,24 @@ map.addLayer({
 });
 
 map.addLayer({
-    id: "residential",
-    type: "fill",
-    source: "osm_polygon",
+    "id": "residential",
+    "type": "fill",
+    "source": "osm_polygon",
     "source-layer": "osm.planet_osm_polygon",
-    filter: [ "all", [ "==", "landuse", "residential" ]],
-    paint: {
+    "filter": [ "all", [ "==", "landuse", "residential" ]],
+    "paint": {
         "fill-color": "#7c90a0",
         "fill-opacity": 0.2
     }
 });
 
 map.addLayer({
-    id: "house",
-    type: "fill",
-    source: "osm_polygon",
+    "id": "house",
+    "type": "fill",
+    "source": "osm_polygon",
     "source-layer": "osm.planet_osm_polygon",
-    filter: [ "all", [ "==", "building", "house" ]],
-    paint: {
+    "filter": [ "all", [ "==", "building", "house" ]],
+    "paint": {
         "fill-color": "#7c90a0",
         "fill-opacity": 0.5
     }
